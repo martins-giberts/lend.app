@@ -14,3 +14,13 @@
 $app->get('/', function () use ($app) {
     return $app->welcome();
 });
+
+$routes = require( base_path() . '/config/routes.php');
+
+foreach($routes as $route)
+{
+	$app->{$route['method']}($route['url'], [
+		'as'=>$route['name'],
+		'uses'=>$route['controller'].'@'.$route['action']
+	]);
+}
