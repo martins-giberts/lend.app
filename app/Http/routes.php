@@ -12,7 +12,7 @@
 */
 
 $app->get('/', function () use ($app) {
-    return $app->welcome();
+    return view('site.index');
 });
 
 $routes = require( base_path() . '/config/routes.php');
