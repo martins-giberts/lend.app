@@ -2,12 +2,13 @@
 
 use App\Models\Loan;
 use League\Fractal\TransformerAbstract;
+use App\Transformers\UserTransformer;
+//use App\Transformers\ExtensionTransformer;
 
 class LoanTransformer extends TransformerAbstract 
 {
-	// TODO: Add Loan extensions as default include
 	protected $defaultIncludes = [
-		'extensions'
+		'extensions',
 	];
 
 	public function transform(Loan $loan)
@@ -28,5 +29,10 @@ class LoanTransformer extends TransformerAbstract
 
 		return $this->collection($extensions, new ExtensionTransformer);
 	}
-
+	
+	public function includeUser(Loan $loan)
+	{
+		$user = $loan->user;
+		return $this->item($user, new UserTransformer);
+	}
 }

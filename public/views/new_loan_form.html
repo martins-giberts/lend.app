@@ -94,7 +94,8 @@
 										ng-pattern="/^\d{4}\-(0?[1-9]|1[012])\-(0?[1-9]|[12][0-9]|3[01])$/"
 										class="form-control"
 										uib-datepicker-popup 
-										ng-model="loan.date" 
+										ng-model="loan.datePickerDate" 
+										ng-change="loan.getDate()"
 										is-open="datePicker.opened" 
 										min-date="datePicker.minDate" 
 										max-date="datePicker.maxDate"

@@ -10,7 +10,9 @@
 			this.commision;
 			this.commisionAmmount;
 			this.totalAmmount;
+			this.datePickerDate;
 			this.date;
+			this.unixTimestamp;
 
 			this.initialize = function() {
 
@@ -21,10 +23,11 @@
 				this.totalAmmount = 0;
 
 				// TODO: Date should be in wrapper
-				this.date =  Date.today().add({days: 7});
+				this.datePickerDate =  Date.today().add({days: 7});
 
 				// Calculate commision and total ammount on the go
 				this.calculateTotalAmmount();
+				this.getDate();
 			};
 
 			// TODO: Include days
@@ -35,6 +38,12 @@
 			this.calculateTotalAmmount = function() {
 				this.calculateCommisionAmmount();
 				this.totalAmmount = parseInt(this.ammount) + this.commisionAmmount;
+			};
+			
+			this.getDate = function()
+			{
+				this.date = Date.parse(this.datePickerDate).toString('yyyy-MM-dd');
+				console.log('this.date', this.date);
 			};
 
 

@@ -31,4 +31,9 @@ final class User extends Model
 		
 		return self::where('ip', '=', (int) $ip)->first();
 	}
+	
+	public function loans()
+	{
+		return $this->hasMany('App\Models\Loan', 'user_id');
+	}
 }

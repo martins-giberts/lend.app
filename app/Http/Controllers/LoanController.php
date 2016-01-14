@@ -74,13 +74,10 @@ class LoanController extends ApiController
 	
 	public function store(Request $request)
 	{
-		// TODO: Detect user, and check if we need to store that too
 		try 
 		{
-			return [
-				'user' => $this->storeUser($request),
-				'loan' => $this->storeLoan($request),
-			];
+			$this->storeUser($request);
+			return $this->storeLoan($request);
 		}
 		catch (ValidationException $e) 
 		{
@@ -101,7 +98,7 @@ class LoanController extends ApiController
 	function storeLoan(Request $request)
 	{
 		$command = new StoreLoan();
-		$command->setParams($request->json()->all());
+		$command->setParams($request->json('loan'));
 		$loan = $command->execute();
 		$item = new Item($loan, $this->loanTransformer);
 		return $this->respondWithItem($item);

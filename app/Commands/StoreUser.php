@@ -19,8 +19,8 @@ class StoreUser extends AbstractValidatingCommand
 	
 	// Join the phone and country code into one
 	// Add Ip address as long
-	public function setParams($params) {
-		
+	public function setParams($params) 
+	{
 		// TODO: This should be wrapped in service.
 		$params['ip'] = ip2long($_SERVER['REMOTE_ADDR']);
 		$params['phone'] = trim($params['countryCode']) . trim($params['phone']);

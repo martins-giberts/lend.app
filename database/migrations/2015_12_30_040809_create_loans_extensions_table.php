@@ -12,7 +12,7 @@ class CreateLoansExtensionsTable extends Migration
      */
     public function up()
     {
-        Schema::create('loans_extensions', function (Blueprint $table) {
+        Schema::create('loan_extensions', function (Blueprint $table) {
             $table->increments('id');
 			$table->integer('loan_id');
 			$table->decimal('interest', 2, 2);
@@ -28,6 +28,6 @@ class CreateLoansExtensionsTable extends Migration
      */
     public function down()
     {
-        Schema::drop('loans_extensions');
+        Schema::drop('loan_extensions');
     }
 }
