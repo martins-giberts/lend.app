@@ -39,6 +39,11 @@
 							commision: 'Commision',
 							total: 'Total'
 						}
+					},
+					errors: {
+						required: 'is required',
+						pattern: 'has invalid symbols, length or both',
+						date: 'has invalid date value'
 					}
 				};
 			}

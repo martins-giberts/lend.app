@@ -49,10 +49,14 @@
 		
 		
 		// TODO: Move to API service
+		$scope.requestHasErrors = false;
+		$scope.apiErrors = {};
 		$scope.onSubmitForLoan = function() {
 			$scope.$broadcast('show-errors-check-validity');
 			
 			if (!$scope.loanForm.$valid) {
+				console.log($scope.loanForm.$error);
+				console.log($scope.loanForm.name.$error);
 				return;
 			}
 			
@@ -69,15 +73,25 @@
 		};
 		
 		// TODO: Redirrect to my loans page
-		var onSubmitSuccess = function()
+		var onSubmitSuccess = function(response)
 		{
-			console.log('onSubmitSuccess');
+			console.log('$http onSubmitSuccess', response);
 		};
 		
 		// TODO: Show error page with the returned message
-		var onSubmitError = function()
+		// TODO: Better and testable error handling
+		var onSubmitError = function(response)
 		{
-			console.log('onSubmitError');
+			console.log(' $httponSubmitError', response);
+			
+			// TODO: Right now we are interested only in error messages			
+			if (response.data.status !== 'error') {
+				return;
+			}
+			
+			$scope.requestHasErrors = true;
+			$scope.apiErrors = response.data.messages;
+			
 		};
 	};
 

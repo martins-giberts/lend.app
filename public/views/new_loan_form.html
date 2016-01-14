@@ -12,7 +12,36 @@
 					
 					<!-- User fields -->
 					<div class="panel-body">
-						<div class="row">					
+						<div class="row">
+							
+							<!-- Form Errors -->
+							<div class="col-xs-12">
+								<div class="alert alert-danger" ng-hide="!loanForm.$invalid" role="alert">
+									<div ng-repeat="(key, errors) in loanForm.$error track by $index">
+										<div ng-repeat="e in errors" role="alert">
+											<span class="glyphicon glyphicon-remove"></span> 
+											Field <strong>{{ messages.loanForm.inputLabels[e.$name] }}</strong> 
+											{{ messages.errors[key] }}.
+										</div>
+									</div>
+								</div>
+							</div>
+							
+							<!-- API Errors (For preview purpose only) -->
+							<div class="col-xs-12">
+								<div class="alert alert-danger" ng-hide="!requestHasErrors" role="alert">
+									<div ng-repeat="(key, errors) in apiErrors track by $index">
+										<div ng-repeat="e in errors" role="alert">
+											<span class="glyphicon glyphicon-remove"></span> 
+											<strong>{{ key | uppercase }}</strong> 
+											{{ e }}
+										</div>
+									</div>
+								</div>
+							</div>
+							
+						</div>
+						<div class="row">		
 							<div class="form-group col-xs-6" show-errors>
 								<label>{{ messages.loanForm.inputLabels.name }}</label>
 								<input class="form-control" placeholder="{{ messages.loanForm.placeholders.name }}" ng-pattern="/^[\w\-\' ]{2,20}$/" ng-model="user.name" name="name" required />
