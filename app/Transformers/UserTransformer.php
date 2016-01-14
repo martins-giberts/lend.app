@@ -15,7 +15,7 @@ class UserTransformer extends TransformerAbstract
 			'phone' => $user->phone,
 			'iban' => $user->iban,
 			'created' => $user->created_at->format('F d, Y'),
-			'updated' => $loan->updated_at->format('F d, Y'),
+			'updated' => $user->updated_at->format('F d, Y'),
         ];
     }
 }

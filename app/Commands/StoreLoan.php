@@ -21,7 +21,7 @@ class StoreLoan extends AbstractValidatingCommand
     {
         $this->validate();
 
-        return User::create($this->params);
+        return Loan::create($this->params);
     }
 
 }

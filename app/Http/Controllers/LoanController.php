@@ -77,8 +77,10 @@ class LoanController extends ApiController
 		// TODO: Detect user, and check if we need to store that too
 		try 
 		{
-			return $this->storeUser($request);
-			return $this->storeLoan($request);
+			return [
+				'user' => $this->storeUser($request),
+				'loan' => $this->storeLoan($request),
+			];
 		}
 		catch (ValidationException $e) 
 		{
