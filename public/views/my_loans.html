@@ -1,1 +1,28 @@
-My Loans
+<div class="container" ng-cloak>
+	<div class="row">
+		<div class="col-xs-12">
+			<caption>{{ user.name }}: {{ user.iban }}</caption>
+			<table class="table">
+				<thead>
+					<tr>
+						<th>{{ messages.list.id }}</th>
+						<th>{{ messages.list.ammount }}</th>
+						<th>{{ messages.list.created }}</th>
+						<th>{{ messages.list.options }}</th>
+					</tr>
+				</thead>
+				<tr ng-repeat="loan in user.loans">
+					<td>{{ loan.id }}</td>
+					<td>{{ loan.ammount | currency }}</td>
+					<td>{{ loan.created | date }}</td>
+					<td>
+						<div class="btn-group btn-group-sm" role="group">
+							<button type="button" class="btn btn-default"><span class="glyphicon glyphicon-share-alt"></span> Extend</button>
+							<button type="button" class="btn btn-default"><span class="glyphicon glyphicon-ok"></span> Pay back</button>
+						</div>
+					</td>
+				</tr>
+			</table>
+		</div>
+	</div>
+</div>

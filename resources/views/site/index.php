@@ -28,7 +28,9 @@ use Illuminate\Support\Facades\URL;
 			</div>
 			<div id="navbar" class="navbar-collapse collapse">
 			  <ul class="nav navbar-nav">
-				<li ng-repeat="item in navList" class="{{ item.isActive ? 'active' : '' }}"><a href="#{{ item.href }}">{{ item.name }}</a></li>
+				<li ng-repeat="item in navList" class="{{ activePath == item.href ? 'active' : '' }}">
+					<a ng-click="getPath()" href="#{{ item.href }}">{{ item.name }}</a>
+				</li>
 			  </ul>
 			</div>
 		  </div>

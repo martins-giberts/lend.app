@@ -102,6 +102,7 @@
 		var onSubmitSuccess = function(response)
 		{
 			$scope.user.addLoan(response.data);
+			$location.path('/my-loans');
 		};
 		
 		// TODO: Show error page with the returned message

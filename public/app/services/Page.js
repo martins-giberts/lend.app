@@ -50,6 +50,17 @@
 				};
 			}
 			
+			if (controllerName === 'LoansController') {
+				messages = {
+					list: {
+						id: '#',
+						ammount: 'Ammount',
+						created: 'Loan aquired',
+						options: 'Options'
+					}
+				};
+			}
+			
 			return messages;
 		};
 		

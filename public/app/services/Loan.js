@@ -63,9 +63,6 @@
 				if (typeof this.created === 'undefined') {
 					return false;
 				}
-				
-				console.log('isOlderThan time', time);
-				console.log('isOlderThan this.created.getTime()', this.created.getTime());
 				return (time >= this.created.getTime());
 			};
 			

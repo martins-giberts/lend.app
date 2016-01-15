@@ -8,22 +8,24 @@
 		
 		$scope.messages = {
 			appName: 'Lend.app Sample'
+		};		
+		
+		$scope.getPath = function() {
+			$scope.activePath == $location.path();
 		};
+		$scope.getPath();
 		
 		// TODO: Update isActive on URL change
 		$scope.navList = [
 			{
 				name: 'Apply for loan',
-				href: '/',
-				isActive: true
+				href: '/'
 			},
 			{
 				name: 'My loans history',
-				href: '/my-loans',
-				isActive: false
+				href: '/my-loans'
 			}
 		];
-		
 	};
 
 	Controller.$inject = injectParams;

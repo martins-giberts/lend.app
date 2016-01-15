@@ -37,10 +37,7 @@
 			
 			this.canTakeLoan = function(ammount) {
 				
-				if (this.isLoanLimitReachedToday()) {
-					
-					console.log('this.isLoanLimitReachedToday()');
-					
+				if (this.isLoanLimitReachedToday()) {					
 					return false;
 				}
 				
@@ -59,7 +56,6 @@
 				var dayAgo = (24).hours().ago().getTime();
 				var failedChecks = 0;
 				for (var i = 0; i < this.loans.length; i++) {
-					console.log('failedChecks', failedChecks)
 					if (!this.loans[i].isOlderThan(dayAgo)) {
 						failedChecks++;
 					}
