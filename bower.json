@@ -1,0 +1,33 @@
+{
+  "name": "lend.app",
+  "description": "",
+  "main": "public/index.php",
+  "authors": [
+    "mgiberts"
+  ],
+  "license": "ISC",
+  "keywords": [
+    "lend.app"
+  ],
+  "moduleType": [],
+  "homepage": "",
+  "private": true,
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "angular": "~1.4.8",
+    "angular-route": "~1.4.8",
+    "angular-bootstrap": "~1.0.0",
+    "bootstrap": "~3.3.6",
+    "angular-ui-router": "~0.2.15",
+    "angular-ui-mask": "~1.6.7",
+    "DateJS": "datejs#~1.0.0-rc3",
+    "angular-bootstrap-show-errors": "~2.3.0",
+    "angular-messages": "~1.4.8"
+  }
+}

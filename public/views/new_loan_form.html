@@ -1,0 +1,151 @@
+<div class="container" ng-cloak>
+	
+	<!-- Form begin -->
+	<form name="loanForm">
+		
+		<div class="row">
+			<div class="col-xs-8">
+				
+				<!-- Input Fields for the loan form -->
+				<div class="panel panel-default">
+					<div class="panel-heading">{{ messages.loanForm.title }}</div>
+					
+					<!-- User fields -->
+					<div class="panel-body">
+						<div class="row">
+							
+							<!-- Form Errors -->
+							<div class="col-xs-12">
+								<div class="alert alert-danger" ng-hide="!showHighRiskError" role="alert">
+									<div ng-hide="!user.isLoanLimitReachedToday()">
+										<span class="glyphicon glyphicon-ban-circle"></span> 
+										{{ messages.errors.userLimitReached }}
+									</div>
+									<div ng-hide="!user.isNightTime()">
+										<span class="glyphicon glyphicon-time"></span>
+										{{ messages.errors.userNightTimeMaxLoan }}
+									</div>
+								</div>
+							</div>
+							
+							<!-- Form Errors -->
+							<div class="col-xs-12">
+								<div class="alert alert-danger" ng-hide="!loanForm.$invalid" role="alert">
+									<div ng-repeat="(key, errors) in loanForm.$error track by $index">
+										<div ng-repeat="e in errors" role="alert">
+											<span class="glyphicon glyphicon-remove"></span> 
+											Field <strong>{{ messages.loanForm.inputLabels[e.$name] }}</strong> 
+											{{ messages.errors[key] }}.
+										</div>
+									</div>
+								</div>
+							</div>
+							
+							<!-- API Errors (For preview purpose only) -->
+							<div class="col-xs-12">
+								<div class="alert alert-danger" ng-hide="!requestHasErrors" role="alert">
+									<div ng-repeat="(key, errors) in apiErrors track by $index">
+										<div ng-repeat="e in errors" role="alert">
+											<span class="glyphicon glyphicon-remove"></span> 
+											<strong>{{ key | uppercase }}</strong> 
+											{{ e }}
+										</div>
+									</div>
+								</div>
+							</div>
+							
+						</div>
+						<div class="row">		
+							<div class="form-group col-xs-6" show-errors>
+								<label>{{ messages.loanForm.inputLabels.name }}</label>
+								<input class="form-control" placeholder="{{ messages.loanForm.placeholders.name }}" ng-pattern="/^[\w\-\' ]{2,20}$/" ng-model="user.name" name="name" required />
+							</div>
+							<div class="col-xs-6">
+								<div class="row">
+									<div class="col-xs-5">
+										<div class="form-group" show-errors>
+											<label>{{ messages.loanForm.inputLabels.countryCode }}</label>
+											<div class="input-group">
+												<div class="input-group-addon"><span class="glyphicon glyphicon-phone-alt"></span></div>
+												<input class="form-control" placeholder="{{ messages.loanForm.placeholders.countryCode }}" ng-pattern="/^([\d]{0,3})?(-{1})?[\d]{1,4}$/" ng-model="user.countryCode" name="countryCode" required />
+											</div>
+										</div>
+									</div>
+									<div class="col-xs-7">
+										<div class="form-group" show-errors>
+											<label>{{ messages.loanForm.inputLabels.phone }}</label>
+											<input class="form-control" placeholder="{{ messages.loanForm.placeholders.phone }}" ng-pattern="/^\d{6,20}$/" ng-model="user.phone" name="phone" required />
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+
+						<div class="form-group" show-errors>
+							<label>{{ messages.loanForm.inputLabels.iban }}</label>
+							<input class="form-control" placeholder="{{ messages.loanForm.placeholders.iban }}" ng-model="user.iban" name="iban" required />
+						</div>
+					</div>
+					<hr>
+					
+					<!-- Loan fields -->
+					<div class="panel-body">
+						<div class="row">					
+							<div class="form-group col-xs-6" show-errors>
+								<label>{{ messages.loanForm.inputLabels.ammount }}</label>
+								<div class="input-group">
+									<div class="input-group-addon">$</div>
+									<input class="form-control" ng-keyup="getTotalAmmount();checkIfValidAmmount()" ng-pattern="/^[1-9][0-9][0-9][0]?$/" ng-model="loan.ammount" name="ammount" required />
+									<div class="input-group-addon">.00</div>
+								</div>
+							</div>
+							
+							<!-- Datepicker -->
+							<div class="form-group col-xs-6" show-errors>
+								<label>{{ messages.loanForm.inputLabels.date }}</label>
+								<p class="input-group">
+									<input 
+										ng-pattern="/^\d{4}\-(0?[1-9]|1[012])\-(0?[1-9]|[12][0-9]|3[01])$/"
+										class="form-control"
+										uib-datepicker-popup 
+										ng-model="loan.datePickerDate" 
+										ng-change="loan.getDate()"
+										is-open="datePicker.opened" 
+										min-date="datePicker.minDate" 
+										max-date="datePicker.maxDate"
+										datepicker-options="datePicker.options" 
+										close-text="Close"
+										required 
+										name="date"
+									/>
+									<span class="input-group-btn">
+										<button type="button" class="btn btn-default" ng-click="datePicker.open()"><i class="glyphicon glyphicon-calendar"></i></button>
+									</span>
+								</p>
+							</div>
+						</div>
+					</div>
+				</div>			
+			</div>
+			<div class="col-xs-4">
+				
+				<!-- Loan info -->
+				<div class="panel panel-default">
+					<div class="panel-heading">{{ messages.loanInfo.title }}</div>
+					<ul class="list-group">
+						<li class="list-group-item">{{ messages.loanInfo.labels.date }}: {{ loan.date | date }}</li>
+						<li class="list-group-item">{{ messages.loanInfo.labels.ammount }}: {{ loan.ammount | currency }}</li>
+						<li class="list-group-item">{{ messages.loanInfo.labels.commision }}: {{ loan.commisionAmmount | currency }}</li>
+						<li class="list-group-item">{{ messages.loanInfo.labels.total }}: {{ loan.totalAmmount | currency }}</li>
+					</ul>
+					<div class="panel-body">
+						<p class="text-center">
+							<button type="submit" class="btn btn-block btn-lg btn-success" ng-click="onSubmitForLoan()">{{ messages.loanForm.inputLabels.submitButton | uppercase }}</button>
+						</p>
+					</div>
+				</div>
+				
+			</div>
+		</div>
+	</form>
+</div>

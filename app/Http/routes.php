@@ -11,6 +11,24 @@
 |
 */
 
-$app->get('/', function () use ($app) {
-    return $app->welcome();
+$app->get('/', function () use ($app) 
+{
+    return view('site.index');
 });
+
+$routes = require( base_path() . '/config/routes.php');
+
+//$app->group(['prefix' => 'loans'], function ($app)
+//{
+//    $app->get('/', 'App\Http\Controllers\LoanController@index');
+//    $app->get('/{loan}', 'App\Http\Controllers\LoanController@show');
+//});
+
+// TODO: Rework routes to better represent API purpose
+foreach($routes as $route)
+{
+	$app->{$route['method']}($route['url'], [
+		'as'=>$route['name'],
+		'uses'=>$route['controller'].'@'.$route['action']
+	]);
+}
