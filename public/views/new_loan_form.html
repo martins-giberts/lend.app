@@ -16,6 +16,20 @@
 							
 							<!-- Form Errors -->
 							<div class="col-xs-12">
+								<div class="alert alert-danger" ng-hide="!showHighRiskError" role="alert">
+									<div ng-hide="!user.isLoanLimitReachedToday()">
+										<span class="glyphicon glyphicon-ban-circle"></span> 
+										{{ messages.errors.userLimitReached }}
+									</div>
+									<div ng-hide="!user.isNightTime()">
+										<span class="glyphicon glyphicon-time"></span>
+										{{ messages.errors.userNightTimeMaxLoan }}
+									</div>
+								</div>
+							</div>
+							
+							<!-- Form Errors -->
+							<div class="col-xs-12">
 								<div class="alert alert-danger" ng-hide="!loanForm.$invalid" role="alert">
 									<div ng-repeat="(key, errors) in loanForm.$error track by $index">
 										<div ng-repeat="e in errors" role="alert">
@@ -81,7 +95,7 @@
 								<label>{{ messages.loanForm.inputLabels.ammount }}</label>
 								<div class="input-group">
 									<div class="input-group-addon">$</div>
-									<input class="form-control" ng-keyup="getTotalAmmount()" ng-pattern="/^\d{3,6}$/" ng-model="loan.ammount" name="ammount" required />
+									<input class="form-control" ng-keyup="getTotalAmmount();checkIfValidAmmount()" ng-pattern="/^[1-9][0-9][0-9][0]?$/" ng-model="loan.ammount" name="ammount" required />
 									<div class="input-group-addon">.00</div>
 								</div>
 							</div>

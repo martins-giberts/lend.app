@@ -56,5 +56,6 @@ use Illuminate\Support\Facades\URL;
 		<script src="<?php echo URL::to('/'); ?>/app/services/Page.js"></script>
 		<script src="<?php echo URL::to('/'); ?>/app/services/Loan.js"></script>
 		<script src="<?php echo URL::to('/'); ?>/app/services/User.js"></script>
+		<script src="<?php echo URL::to('/'); ?>/app/services/CurrentUser.js"></script>
 	</body>
 </html>

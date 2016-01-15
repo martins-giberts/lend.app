@@ -15,11 +15,12 @@ class LoanTransformer extends TransformerAbstract
 	{
 		return [
 			'id' => $loan->id,
-			'user_id' => $loan->user_id,
+			'userId' => $loan->user_id,
 			'ammount' => $loan->ammount,
-			'interest' => $loan->interest,
-			'pay_back_date' => $loan->pay_back_date,
-			'updated' => $loan->updated_at->format('F d, Y'),
+			'commision' => $loan->interest,
+			'date' => $loan->pay_back_date,
+			'updated' => $loan->updated_at->format('Y-m-d H:i:s'),
+			'created' => $loan->created_at->format('Y-m-d H:i:s'),
 		];
 	}
 

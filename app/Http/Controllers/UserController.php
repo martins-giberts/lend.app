@@ -1,12 +1,9 @@
-<?php namespace App\Http\Controllers;
+<?php
+namespace App\Http\Controllers;
 
-use App\Models\Loan;
 use App\Models\User;
-use App\Commands\StoreLoan;
 use App\Commands\StoreUser;
-use App\Commands\UpdateLoan;
 use App\Commands\UpdateUser;
-use App\Transformers\LoanTransformer;
 use App\Transformers\UserTransformer;
 use Illuminate\Http\Request;
 use League\Fractal\Manager;
@@ -16,19 +13,9 @@ use \App\Exceptions\ValidationException;
 
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\Response as IlluminateResponse;
-use Illuminate\Support\Facades\Input;
 
-class LoanController extends ApiController 
+class UserController extends ApiController
 {
-	/**
-	 * @var Loan
-	 */
-	protected $loan;
-	/**
-	 * @var LoanTransformer
-	 */
-	protected $loanTransformer;
-	
 	/**
 	 * @var User
 	 */
@@ -38,37 +25,40 @@ class LoanController extends ApiController
 	 */
 	protected $userTransformer;
 
-	function __construct(Loan $loan, User $user, LoanTransformer $loanTransformer, UserTransformer $userTransformer)
+	function __construct(User $user, UserTransformer $userTransformer)
 	{
-		$this->loan = $loan;
-		$this->loanTransformer = $loanTransformer;
-		
 		$this->user = $user;
 		$this->userTransformer = $userTransformer;
 	}
 
-	public function index(Manager $fractal, LoanTransformer $loanTransformer)
+	// Return current user
+	public function index(Manager $fractal, UserTransformer $userTransformer)
 	{
-		// TODO: Add User data and filter by user data
-		$loans = $this->loan->with(['extensions', 'user'])->get();
-		$collection = new Collection($loans, $loanTransformer);
-		$data = $fractal->createData($collection)->toArray();
-
-		return $this->respond($data);
+		try 
+		{
+			$user = $this->user;
+			$item = new Item($user::getCurrent(), $userTransformer);
+			return $this->respondWithItem($item);
+		}
+		catch (ModelNotFoundException $e) 
+		{
+			$this->statusCode = IlluminateResponse::HTTP_NOT_FOUND;
+			return $this->respondWithError(['User does not exist']);
+		}
 	}
 
 	public function show($id)
 	{
 		try 
 		{
-			$loan = $this->loan->findOrFail($id);
-			$item = new Item($loan, $this->loanTransformer);
+			$user = $this->user->findOrFail($id);
+			$item = new Item($user, $this->userTransformer);
 			return $this->respondWithItem($item);
 		}
 		catch (ModelNotFoundException $e) 
 		{
 			$this->statusCode = IlluminateResponse::HTTP_NOT_FOUND;
-			return $this->respondWithError(['Loan does not exist']);
+			return $this->respondWithError(['User does not exist']);
 		}
 	}
 	
@@ -76,8 +66,7 @@ class LoanController extends ApiController
 	{
 		try 
 		{
-			$this->storeUser($request);
-			return $this->storeLoan($request);
+			return $this->storeUser($request);
 		}
 		catch (ValidationException $e) 
 		{
@@ -95,25 +84,16 @@ class LoanController extends ApiController
 		return $this->respondWithItem($item);
 	}
 	
-	function storeLoan(Request $request)
-	{
-		$command = new StoreLoan();
-		$command->setParams($request->json('loan'));
-		$loan = $command->execute();
-		$item = new Item($loan, $this->loanTransformer);
-		return $this->respondWithItem($item);
-	}
-	
 	public function update($id, Request $request)
 	{
 		try 
 		{
-			$loan = $this->loan->findOrFail($id);
-			$command = new UpdateLoan();
-			$command->setLoan($loan);
+			$user = $this->user->findOrFail($id);
+			$command = new UpdateUser();
+			$command->setUser($user);
 			$command->setParams($request->json()->all());
-			$loan = $command->execute();
-			$item = new Item($loan, $this->loanTransformer);
+			$user = $command->execute();
+			$item = new Item($user, $this->userTransformer);
 			return $this->respondWithItem($item);
 		}
 		catch (ValidationException $e) 
@@ -124,7 +104,7 @@ class LoanController extends ApiController
 		catch (ModelNotFoundException $e) 
 		{
 			$this->statusCode = IlluminateResponse::HTTP_NOT_FOUND;
-			return $this->respondWithError(['Loan does not exist']);
+			return $this->respondWithError(['User does not exist']);
 		}
 	}
 	
@@ -132,8 +112,8 @@ class LoanController extends ApiController
 	{
 		try 
 		{
-			$loan = $this->loan->findOrFail($id);
-			$loan->delete();
+			$user = $this->user->findOrFail($id);
+			$user->delete();
 			return $this->respondWithArray([
 				'status' => 'success',
 			]);
@@ -141,7 +121,7 @@ class LoanController extends ApiController
 		catch (ModelNotFoundException $e) 
 		{
 			$this->statusCode = IlluminateResponse::HTTP_NOT_FOUND;
-			return $this->respondWithError(['Loan does not exist']);
+			return $this->respondWithError(['User does not exist']);
 		}
 	}
 }

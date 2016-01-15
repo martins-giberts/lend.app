@@ -23,7 +23,7 @@ class StoreUser extends AbstractValidatingCommand
 	{
 		// TODO: This should be wrapped in service.
 		$params['ip'] = ip2long($_SERVER['REMOTE_ADDR']);
-		$params['phone'] = trim($params['countryCode']) . trim($params['phone']);
+		$params['phone'] = trim($params['countryCode']) . ' ' .  trim($params['phone']);
 		
 		// Remove Country code
 		unset($params['countryCode']);

@@ -32,6 +32,12 @@ final class User extends Model
 		return self::where('ip', '=', (int) $ip)->first();
 	}
 	
+	public static function getCurrent()
+	{
+		// TODO: Implement $_SERVER fascade or wrapper
+		return self::findByIp(ip2long($_SERVER['REMOTE_ADDR']));
+	}
+	
 	public function loans()
 	{
 		return $this->hasMany('App\Models\Loan', 'user_id');

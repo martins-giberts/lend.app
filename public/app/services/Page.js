@@ -20,7 +20,7 @@
 							countryCode: 'Country code',
 							phone: 'Phone number',
 							iban: 'International Bank Account Number',
-							ammount: 'Loan ammount',
+							ammount: 'Loan ammount (100 - 1000)',
 							date: 'Payment date (max 30 days)',
 							submitButton: 'Apply for loan'
 						},
@@ -41,6 +41,8 @@
 						}
 					},
 					errors: {
+						userLimitReached: 'Todays Limit reached from this IP',
+						userNightTimeMaxLoan: 'It is not possible to take this ammount at the current time, try smaller loan',
 						required: 'is required',
 						pattern: 'has invalid symbols, length or both',
 						date: 'has invalid date value'

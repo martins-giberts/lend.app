@@ -16,11 +16,11 @@
 		'$location',
 		'$routeParams', 
 		'$http', 
-		'Page', 
-		'User',
+		'Page',
+		'CurrentUser',
 		'Loan'
 	];
-	var Controller = function ($scope, $location, $routeParams, $http, Page, User, Loan) {
+	var Controller = function ($scope, $location, $routeParams, $http, Page, CurrentUser, Loan) {
 		
 		Page.setTitle('Apply for new loan');
 		
@@ -28,7 +28,7 @@
 			messages: Page.getViewMessages(controllerName),
 			
 			// TODO: Read User cookie, detect if this is returning client
-			user: new User(),
+			user: CurrentUser,
 			loan: new Loan()
 		});
 		
@@ -47,6 +47,22 @@
 			$scope.loan.calculateTotalAmmount();
 		};
 		
+		$scope.checkIfValidAmmount = function() {
+			var ammount = 0,
+				min = $scope.loan.defaultMinAmmount,
+				max = $scope.loan.defaultMaxAmmount;
+		
+			// Take it as zero if undefined
+			if (typeof $scope.loanForm.ammount.$modelValue !== 'undefined') {
+				ammount = parseInt($scope.loanForm.ammount.$modelValue);
+			}
+			
+			if (ammount < min || max < ammount)
+			{
+				$scope.loanForm.ammount.$invalid = true;
+			}
+		};
+		
 		
 		// TODO: Move to API service
 		$scope.requestHasErrors = false;
@@ -60,8 +76,18 @@
 				return;
 			}
 			
+			if (!$scope.user.canTakeLoan($scope.loan.ammount)) {
+				
+				$scope.showHighRiskError = true;
+				return;
+			}
+			else {
+				$scope.showHighRiskError = false;
+			}
+			
 			// TODO: Disable post button
 			// TODO: Get URL from config/settings
+			
 			
 			// Build request
 			$http
@@ -75,7 +101,7 @@
 		// TODO: Redirrect to my loans page
 		var onSubmitSuccess = function(response)
 		{
-			console.log('$http onSubmitSuccess', response);
+			$scope.user.addLoan(response.data);
 		};
 		
 		// TODO: Show error page with the returned message
