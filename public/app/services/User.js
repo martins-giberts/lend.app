@@ -60,7 +60,7 @@
 						failedChecks++;
 					}
 					
-					if (failedChecks > 3) {
+					if (failedChecks >= 3) {
 						return true;
 					}
 				}

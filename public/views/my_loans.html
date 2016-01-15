@@ -1,24 +1,32 @@
 <div class="container" ng-cloak>
 	<div class="row">
 		<div class="col-xs-12">
-			<caption>{{ user.name }}: {{ user.iban }}</caption>
+			<p>
+				<span class="label label-primary">{{ user.iban }}</span> <strong>{{ user.name }}</strong>
+			</p>
 			<table class="table">
 				<thead>
 					<tr>
 						<th>{{ messages.list.id }}</th>
 						<th>{{ messages.list.ammount }}</th>
+						<th>{{ messages.list.ammountToPay }}</th>
+						<th>{{ messages.list.totalInterest }}</th>
 						<th>{{ messages.list.created }}</th>
+						<th>{{ messages.list.paybackDate }}</th>
 						<th>{{ messages.list.options }}</th>
 					</tr>
 				</thead>
 				<tr ng-repeat="loan in user.loans">
 					<td>{{ loan.id }}</td>
 					<td>{{ loan.ammount | currency }}</td>
+					<td>{{ loan.totalAmmount | currency }}</td>
+					<td>{{ loan.commisionAmmount | currency }}</td>
 					<td>{{ loan.created | date }}</td>
+					<td>{{ loan.date | date }}</td>
 					<td>
 						<div class="btn-group btn-group-sm" role="group">
-							<button type="button" class="btn btn-default"><span class="glyphicon glyphicon-share-alt"></span> Extend</button>
-							<button type="button" class="btn btn-default"><span class="glyphicon glyphicon-ok"></span> Pay back</button>
+							<button type="button" class="btn btn-default"><span class="glyphicon glyphicon-share-alt"></span> {{ messages.list.buttons.extend }}</button>
+							<button type="button" class="btn btn-default"><span class="glyphicon glyphicon-ok"></span> {{ messages.list.buttons.payBack }}</button>
 						</div>
 					</td>
 				</tr>

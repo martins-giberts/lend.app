@@ -55,8 +55,15 @@
 					list: {
 						id: '#',
 						ammount: 'Ammount',
-						created: 'Loan aquired',
-						options: 'Options'
+						ammountToPay: 'Ammount to pay',
+						totalInterest: 'Interest',
+						created: 'Aquired',
+						paybackDate: 'Payback date',
+						options: 'Options',
+						buttons: {
+							extend: 'Extend (+30 days)',
+							payBack: 'Pay back'
+						}
 					}
 				};
 			}
